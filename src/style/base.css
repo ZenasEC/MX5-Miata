@@ -1,0 +1,198 @@
+@import "@fontsource-variable/big-shoulders-display";
+@import "@fontsource-variable/inter";
+@import "./tokens.css";
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: var(--ink-000);
+  color: var(--paper);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: auto; /* Handled by Lenis */
+}
+
+body {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  background: linear-gradient(180deg, #050506 0%, #080810 45%, #050506 100%);
+  color: var(--paper);
+}
+
+/* Background nocturnal lighting atmosphere (behind canvas) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 30%, rgba(255, 179, 92, 0.08), transparent 70%),
+    radial-gradient(ellipse 90% 70% at 50% 90%, rgba(20, 22, 30, 0.8), rgba(5, 5, 6, 1) 100%);
+  z-index: -1;
+}
+
+/* 3D Canvas layer */
+#webgl-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#webgl-canvas.interactive {
+  pointer-events: auto;
+}
+
+/* Main content wrapper */
+#app {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+/* Typography styles */
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.88;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-sans);
+  font-size: var(--step--1);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.lead-p {
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: var(--ink-700);
+  max-width: 52ch;
+}
+
+p {
+  color: var(--ink-700);
+}
+
+strong {
+  color: var(--paper);
+  font-weight: 600;
+}
+
+/* Links and buttons reset */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* Custom Cursor (fine pointer only) */
+@media (hover: hover) and (pointer: fine) {
+  body.has-custom-cursor,
+  body.has-custom-cursor a,
+  body.has-custom-cursor button,
+  body.has-custom-cursor input,
+  body.has-custom-cursor label {
+    cursor: none;
+  }
+
+  .custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 28px;
+    height: 28px;
+    margin: -14px 0 0 -14px;
+    border: 1.5px solid rgba(242, 240, 236, 0.45);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate3d(-100px, -100px, 0);
+    transition: width var(--dur-1) var(--ease-power3-out),
+                height var(--dur-1) var(--ease-power3-out),
+                margin var(--dur-1) var(--ease-power3-out),
+                border-color var(--dur-1) var(--ease-power3-out),
+                background-color var(--dur-1) var(--ease-power3-out);
+  }
+
+  .custom-cursor.hover {
+    width: 48px;
+    height: 48px;
+    margin: -24px 0 0 -24px;
+    border-color: var(--accent);
+    background-color: var(--accent-soft);
+  }
+
+  .custom-cursor.active {
+    transform: scale(0.85);
+  }
+
+  .custom-cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 4px;
+    margin: -2px 0 0 -2px;
+    background-color: var(--paper);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate3d(-100px, -100px, 0);
+  }
+}
+
+/* Reduced Motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .custom-cursor, .custom-cursor-dot {
+    display: none !important;
+  }
+}

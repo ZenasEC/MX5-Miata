@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mazda MX-5 Miata (NA) — Pop-Up Headlights</title>
+    <meta
+      name="description"
+      content="A cinematic, single-page WebGL tribute to the first-generation Mazda MX-5 Miata (NA, 1989–1997) and its iconic pop-up headlights."
+    />
+    <link rel="stylesheet" href="/src/style/base.css" />
+    <link rel="stylesheet" href="/src/style/sections.css" />
+  </head>
+  <body>
+    <!-- 3D Canvas Layer -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- 1. Preloader Screen -->
+    <div id="preloader" role="status" aria-live="polite">
+      <div class="preloader-header">
+        <span>Mazda MX-5 Miata (NA)</span>
+        <span>Retractable Pods</span>
+      </div>
+      <div class="preloader-center">
+        <div class="preloader-pod-indicator" aria-hidden="true">
+          <div id="pod-lamp-left" class="pod-lamp-icon">
+            <div class="lamp-beam"></div>
+          </div>
+          <div id="pod-lamp-right" class="pod-lamp-icon">
+            <div class="lamp-beam"></div>
+          </div>
+        </div>
+        <div id="preloader-percent" class="preloader-percent">0%</div>
+      </div>
+      <div class="preloader-footer">
+        <span>Ignition Sequence</span>
+        <div class="preloader-bar-wrap">
+          <div id="preloader-bar" class="preloader-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Flow -->
+    <div id="app">
+      <!-- 2. Hero Section -->
+      <section id="hero" class="section">
+        <div class="container" style="display: flex; flex-direction: column; min-height: 100svh; justify-content: space-between;">
+          <header class="hero-nav">
+            <div class="brand-badge">Mazda MX-5 NA // 1989–1997</div>
+            <div class="hero-nav-meta">Retractable Headlamp Tribute</div>
+          </header>
+
+          <div class="hero-main">
+            <div class="eyebrow">The Roadster Renaissance</div>
+            <h1 class="hero-title">
+              THE SOUL OF<br />
+              <span class="accent-word">POP-UP</span> LIGHTS.
+            </h1>
+            <div class="hero-sub">
+              <p class="lead-p" data-reveal>
+                Conceived under the Japanese philosophy of <strong>Jinba Ittai</strong> — rider and horse as one.
+                A lightweight front-mid engine roadster with the most charismatic eyes in automotive history.
+              </p>
+              <div class="hero-scroll-cue">
+                <span>Scroll to wake</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 5v14M19 12l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fallback message if WebGL unsupported -->
+          <div id="webgl-fallback">
+            <h3>3D Acceleration Unavailable</h3>
+            <p>Your browser or hardware does not support WebGL. All site history, engineering specs, and content remain fully readable below.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. The Wink Section -->
+      <section id="wink" class="section">
+        <div class="container">
+          <div class="wink-grid">
+            <div>
+              <div class="eyebrow">Signature Gesture</div>
+              <h2 class="wink-title" data-reveal>THE WINK.</h2>
+              <p class="lead-p" data-reveal>
+                Two motorized pods hinged flush into the aluminum hood.
+                With a twist of the dashboard stalk, dual halogen beams rise into the night air.
+                Stagger the motors, and the NA flashes its legendary salute.
+              </p>
+              <div class="wink-scrub-indicator">
+                <span class="pulse-dot"></span>
+                <span>Scroll controls headlamp angle</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Free Viewer Section -->
+      <section id="viewer" class="section">
+        <!-- Interactive Pointer Zone for 3D Orbiting -->
+        <div id="viewer-zone" class="viewer-interaction-zone" tabindex="0" aria-label="3D Car Viewer: Drag to rotate the vehicle, or use Left and Right arrow keys"></div>
+
+        <div class="container viewer-hud">
+          <div class="viewer-header">
+            <div class="eyebrow">Studio Stage</div>
+            <h2 class="viewer-title">INSPECT &amp; ACTIVATE</h2>
+            <p class="lead-p">
+              Pure sculptural lines without aerodynamic clutter. Examine the silhouette from any angle, then deploy the headlights.
+            </p>
+          </div>
+
+          <div class="viewer-controls-group">
+            <button
+              id="btn-toggle-lights"
+              class="btn-pill"
+              type="button"
+              aria-pressed="false"
+              data-magnetic
+            >
+              <span class="btn-led"></span>
+              <span id="btn-toggle-lights-text">Lights Up</span>
+            </button>
+            <button
+              id="btn-reset-view"
+              class="btn-pill"
+              type="button"
+              data-magnetic
+            >
+              Reset View
+            </button>
+          </div>
+
+          <div class="viewer-hint">
+            <span>Drag to rotate</span>
+            <span>·</span>
+            <span>Arrows to steer</span>
+            <span>·</span>
+            <span>Idle spin</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Timeline Section -->
+      <section id="timeline" class="section">
+        <div class="container">
+          <div class="eyebrow">Chronology</div>
+          <h2 class="timeline-title" data-reveal>THREE DEFINING MOMENTS.</h2>
+          <div id="timeline-container" class="timeline-grid">
+            <!-- Injected dynamically from TIMELINE_DATA -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Specs Section -->
+      <section id="specs" class="section">
+        <div class="container">
+          <div class="eyebrow">Engineering</div>
+          <h2 class="specs-title" data-reveal>PURIST SPECIFICATIONS.</h2>
+          <div id="specs-container" class="specs-grid">
+            <!-- Injected dynamically from SPECS_DATA -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Footer -->
+      <footer id="footer" class="section">
+        <div class="container">
+          <div class="footer-inner">
+            <div class="footer-top">
+              <div>
+                <div class="eyebrow">Philosophy</div>
+                <div class="footer-brand">JINBA ITTAI.</div>
+                <p style="max-width: 42ch; margin-top: 1rem; color: var(--ink-700);">
+                  Rider and horse as one. No excess weight, no digital interference — just mechanical synergy between driver and machine.
+                </p>
+              </div>
+
+              <div class="footer-contract-callout">
+                <h4>Drop-In 3D Model Support</h4>
+                <p>
+                  Built with a procedural roadster by default. To swap in a custom <code>.glb</code>, place it at
+                  <code>/models/miata.glb</code> with pivot groups <code>headlight_L</code> and <code>headlight_R</code> rotating on local X.
+                </p>
+              </div>
+            </div>
+
+            <div class="footer-bottom">
+              <div>Mazda MX-5 Miata (NA) // 1989–1997 Tribute</div>
+              <div class="model-credit">
+                3D model:
+                <a href="https://skfb.ly/ptYor" target="_blank" rel="noopener"
+                  >“low poly mazda mx-5 miata na (UPDATE)” by SPDWKS</a
+                >
+                ·
+                <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener"
+                  >CC BY 4.0</a
+                >
+              </div>
+              <div class="footer-links">
+                <a href="#hero" id="back-to-top">Back to Top ↑</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Application Entry Point -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
